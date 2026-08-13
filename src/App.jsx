@@ -516,7 +516,7 @@ export default function App() {
   }, []);
 
   const waLink = "https://wa.me/6281234567890?text=" + encodeURIComponent("Halo, aku mau tanya-tanya soal CopyGen dulu ya!");
-  const lynkLink = "https://lynk.id/rifkial23";
+  const lynkLink = "http://lynk.id/rifkial23/w6dm6d1kl7w1/checkout";
 
   if (view === "tool") {
     return <GeneratorTool goBack={() => setView("landing")} />;

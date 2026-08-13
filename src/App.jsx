@@ -515,7 +515,7 @@ export default function App() {
     } catch (e) {}
   }, []);
 
-  const waLink = "https://wa.me/6281234567890?text=" + encodeURIComponent("Halo, aku mau tanya-tanya soal CopyGen dulu ya!");
+  const waLink = "https://wa.me/6289670781401?text=" + encodeURIComponent("Halo, aku mau tanya-tanya soal CopyGen dulu ya!");
   const lynkLink = "http://lynk.id/rifkial23/w6dm6d1kl7w1/checkout";
 
   if (view === "tool") {

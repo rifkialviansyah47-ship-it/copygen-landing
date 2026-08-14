@@ -50,55 +50,94 @@ const TONE_OPENERS = {
 };
 
 const TONE_CLOSERS = {
-  "Santai": "yuk cus dicoba, ga bakal nyesel!",
-  "Persuasif": "jangan tunggu sampai kehabisan, ambil sekarang.",
-  "Elegan": "karena kamu pantas mendapatkan yang terbaik.",
-  "Lucu / Gaul": "buruan gaskeun sebelum keabisan wkwk",
-  "Profesional": "kami siap membantu Anda kapan saja.",
+  "Santai": [
+    "yuk cus dicoba, ga bakal nyesel!",
+    "gampang kok order-nya, tinggal klik aja!",
+    "udah banyak yang cobain, giliran kamu sekarang!",
+  ],
+  "Persuasif": [
+    "jangan tunggu sampai kehabisan, ambil sekarang.",
+    "keputusan yang gak bakal kamu sesali.",
+    "kesempatan kayak gini gak dateng dua kali.",
+  ],
+  "Elegan": [
+    "karena kamu pantas mendapatkan yang terbaik.",
+    "detail sekecil ini yang bikin bedanya.",
+    "pilihan yang selalu tepat, kapan pun dipakai.",
+  ],
+  "Lucu / Gaul": [
+    "buruan gaskeun sebelum keabisan wkwk",
+    "dijamin bikin ketagihan, jangan salahin kita ya",
+    "udah, gausah mikir lama-lama, cobain aja dulu",
+  ],
+  "Profesional": [
+    "kami siap membantu Anda kapan saja.",
+    "kualitas yang telah teruji dan dipercaya.",
+    "solusi yang tepat untuk kebutuhan Anda.",
+  ],
 };
 
-function ctaLine(cta) {
-  const map = {
-    "Order sekarang": "🛒 Order sekarang, stok terbatas!",
-    "DM untuk info": "📩 DM kita buat info lebih lanjut ya!",
-    "Follow buat update": "🔔 Follow biar gak ketinggalan update terbaru!",
-    "Klik link di bio": "🔗 Klik link di bio buat langsung checkout!",
-  };
-  return map[cta] || "🛒 Order sekarang!";
+const CTA_VARIANTS = {
+  "Order sekarang": [
+    "🛒 Order sekarang, stok terbatas!",
+    "🛒 Yuk langsung order sebelum kehabisan!",
+    "🛒 Order sekarang juga, gampang kok!",
+  ],
+  "DM untuk info": [
+    "📩 DM kita buat info lebih lanjut ya!",
+    "📩 Chat kita dulu kalau masih ada yang mau ditanya!",
+    "📩 DM aja, kita bantu jelasin detailnya!",
+  ],
+  "Follow buat update": [
+    "🔔 Follow biar gak ketinggalan update terbaru!",
+    "🔔 Yuk follow, banyak promo nyusul!",
+    "🔔 Follow sekarang biar gak kelewatan info penting!",
+  ],
+  "Klik link di bio": [
+    "🔗 Klik link di bio buat langsung checkout!",
+    "🔗 Tinggal klik link di bio, checkout gampang!",
+    "🔗 Link di bio, klik dan langsung order!",
+  ],
+};
+
+function ctaLine(cta, idx = 0) {
+  const variants = CTA_VARIANTS[cta] || CTA_VARIANTS["Order sekarang"];
+  return variants[idx] || variants[0];
 }
 
 function buildCaptions({ brand, niche, usp, tone, cta, audience }) {
   const openers = TONE_OPENERS[tone] || TONE_OPENERS["Santai"];
-  const closer = TONE_CLOSERS[tone] || TONE_CLOSERS["Santai"];
+  const closers = TONE_CLOSERS[tone] || TONE_CLOSERS["Santai"];
   const uspList = usp ? usp.split(",").map((u) => u.trim()).filter(Boolean) : [];
   const audienceLine = audience ? ` buat kamu yang ${audience.toLowerCase()}` : "";
+  const mainUsp = uspList[0] ? uspList[0].toLowerCase() : "kualitas terbaik";
 
   const angle1 = [
     openers[0],
     `${brand || "Produk ini"}${niche ? `, ${niche.toLowerCase()}` : ""} hadir${audienceLine}.`,
     uspList.length ? uspList.map((u) => `✔️ ${u}`).join("\n") : "",
-    closer,
+    closers[0],
     "",
-    ctaLine(cta),
+    ctaLine(cta, 0),
   ].filter(Boolean).join("\n");
 
   const angle2 = [
     `Masalah: susah nemu ${niche || "produk"} yang pas?`,
     openers[1] || openers[0],
-    `${brand || "Kami"} jawab kebutuhan itu dengan ${uspList[0] ? uspList[0].toLowerCase() : "kualitas terbaik"}.`,
+    `${brand || "Kami"} jawab kebutuhan itu dengan ${mainUsp}.`,
     uspList.slice(1).length ? uspList.slice(1).map((u) => `+ ${u}`).join("\n") : "",
-    closer,
+    closers[1],
     "",
-    ctaLine(cta),
+    ctaLine(cta, 1),
   ].filter(Boolean).join("\n");
 
   const angle3 = [
     openers[2] || openers[0],
     `Buruan sebelum kehabisan — ${brand || "produk ini"} lagi diminati banget${audienceLine}.`,
     uspList.length ? `Kenapa banyak yang pilih ini?\n${uspList.map((u) => `• ${u}`).join("\n")}` : "",
-    closer,
+    closers[2],
     "",
-    ctaLine(cta),
+    ctaLine(cta, 2),
   ].filter(Boolean).join("\n");
 
   return [
@@ -515,8 +554,8 @@ export default function App() {
     } catch (e) {}
   }, []);
 
-  const waLink = "https://wa.me/6289670781401?text=" + encodeURIComponent("Halo, aku mau tanya-tanya soal CopyGen dulu ya!");
-  const lynkLink = "https://lynk.id/rifkial23/w6dm6d1kl7w1";
+  const waLink = "https://wa.me/6281234567890?text=" + encodeURIComponent("Halo, aku mau tanya-tanya soal CopyGen dulu ya!");
+  const lynkLink = "https://lynk.id/rifkial23";
 
   if (view === "tool") {
     return <GeneratorTool goBack={() => setView("landing")} />;
